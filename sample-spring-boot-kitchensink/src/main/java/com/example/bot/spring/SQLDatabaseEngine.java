@@ -12,7 +12,30 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	@Override
 	String search(String text) throws Exception {
 		//Write your code here
-		return null;
+		String result = null;
+		try {
+			
+			Connection connection = getConnection();
+			
+			PreparedStatement stmt = connection.prepareStatement("SELECT response FROM lala where keyword = ?");
+			
+			stmt.setString(1, text);
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				System.out.println(rs.getString(1)); 
+				result = rs.getString(1);
+			}
+			
+			rs.close();
+			stmt.close();
+			connection.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		if (result != null)
+			return result;
+		throw new Exception("NOT FOUND");
 	}
 	
 	
